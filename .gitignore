@@ -1,0 +1,23 @@
+# Nunca versionar secretos
+*.key
+*.pem
+id_rsa*
+known_hosts*
+etc/openfortivpn*.conf
+!etc/*.example
+
+# Estado local de fish (incluye variables universales)
+fish/fish_variables
+
+# Basura
+*.swp
+*~
+.DS_Store
+
+# Temporales de editores
+*.bak
+*.bak.*
+*.save
+*.orig
+config/nvim/lua/plugins/theme.lua
+config/hypr/*.antes-*

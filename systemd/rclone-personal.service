@@ -1,0 +1,20 @@
+[Unit]
+Description=Rclone Mount Google Drive Personal
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=notify
+ExecStart=/usr/bin/rclone mount personal-drive: %h/GoogleDrive/Personal \
+    --vfs-cache-mode full \
+    --vfs-cache-max-age 24h \
+    --vfs-read-chunk-size 128M \
+    --vfs-read-chunk-size-limit 1G \
+    --buffer-size 64M \
+    --dir-cache-time 72h
+ExecStop=/usr/bin/fusermount -u %h/GoogleDrive/Personal
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=default.target

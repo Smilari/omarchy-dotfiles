@@ -1,0 +1,115 @@
+# omarchy-dotfiles
+
+Configuración de mi estación de trabajo: **Omarchy** (Arch Linux), Hyprland/Wayland,
+Alacritty, fish y Neovim/LazyVim.
+
+El objetivo es simple: si reinstalo el sistema o cambio de máquina, clono este repo,
+corro un script y vuelvo a tener todo como lo tenía.
+
+---
+
+## Qué incluye
+
+- **Funciones de fish** — utilidades de terminal y un toolkit para trabajar con
+  servidores remotos por SSH.
+- **Configuración de aplicaciones** — Alacritty, tmux, Neovim, Hyprland.
+- **Lista de paquetes** — todo lo instalado explícitamente con pacman y desde AUR.
+- **Unidades de systemd** de usuario.
+- **Plantillas de `/etc`** — solo la forma del archivo, nunca los valores.
+
+No hay credenciales, claves privadas ni datos de ningún entorno concreto. Las
+plantillas usan `[COMPLETAR]` en lugar de valores reales.
+
+---
+
+## Estructura
+
+```text
+omarchy-dotfiles/
+├── fish/
+│   ├── functions/       funciones de fish
+│   ├── completions/
+│   └── config.fish
+├── config/              alacritty/, hypr/, tmux/, nvim/
+├── systemd/             unidades de usuario
+├── packages/            pacman-explicit.txt, aur.txt
+├── etc/                 plantillas, sin credenciales
+├── sync.fish            sistema → repo
+├── install.fish         repo → sistema
+└── README.md
+```
+
+---
+
+## Uso
+
+### Guardar los cambios del sistema
+
+```fish
+./sync.fish
+git status --short
+git add -A; and git commit -m "sync: <qué cambió>"
+```
+
+Correrlo cada vez que agregues una función o cambies algo que quieras conservar.
+La idea de tener los dos sentidos es que el repo no se quede viejo: mantenerlo es
+`./sync.fish` y commitear.
+
+### Restaurar en una máquina nueva
+
+```fish
+git clone https://github.com/Smilari/omarchy-dotfiles.git ~/omarchy-dotfiles
+cd ~/omarchy-dotfiles
+./install.fish
+```
+
+Instala los paquetes base, copia las funciones y configuraciones, y al terminar
+lista los pasos que quedan a mano (clave SSH, credenciales, variables de entorno).
+
+---
+
+## Funciones incluidas
+
+### Terminal
+
+| Comando | Qué hace |
+| --- | --- |
+| `cls` | Limpia pantalla y scrollback, también dentro de tmux |
+| `<cmd> \| copy` | Manda la salida al portapapeles (Wayland) |
+| `paste` | Vuelca el portapapeles a stdout |
+
+### Acceso a servidores
+
+Trabajan sobre los hosts definidos en `~/.ssh/config`, que cada uno define por
+su cuenta. Sin esa configuración no tienen a dónde conectarse.
+
+| Comando | Qué hace |
+| --- | --- |
+| `vm [-u usuario] [filtro]` | Selector fzf de hosts; graba la sesión en un log |
+| `vmrun <host> '<cmd>'` | Ejecuta un comando remoto y trae la salida local |
+| `vmrunx '<cmd>' <host>…` | El mismo comando en varios hosts, con separadores |
+| `vmx <filtro>` | Abre varios hosts en panes de tmux sincronizados |
+| `vmfs <host> [ruta]` / `vmfs-u` | Monta y desmonta el filesystem remoto vía sshfs |
+| `gf <host>` | Estado de un servicio GlassFish y sus instancias |
+| `vpn-up` / `vpn-down` / `vpn-status` | Levanta una VPN Forti vía systemd y fija los dominios DNS |
+
+### Notas de trabajo
+
+| Comando | Qué hace |
+| --- | --- |
+| `ticket <asunto>` | Crea una entrada de bitácora con selector de categoría |
+| `task <asunto>` | Ídem, para tareas más largas |
+
+Ambos escriben en el directorio que indique `$OPS_BASE`.
+
+---
+
+## Notas
+
+- **Hyprland no se restaura automáticamente.** Omarchy administra esos archivos y
+  cambia su formato entre versiones, así que `install.fish` los omite. Quedan
+  versionados como referencia para replicar los cambios a mano.
+- **`fish_variables` está ignorado**: guarda variables universales con rutas locales.
+  Las que importan se setean durante la instalación.
+- Antes de restaurar `config/`, conviene mirar qué archivos modificaste realmente
+  para no pisar cambios que traiga una versión más nueva de Omarchy.
