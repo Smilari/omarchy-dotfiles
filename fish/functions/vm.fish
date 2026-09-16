@@ -48,7 +48,10 @@ function vm --description 'Conectar a una VM (fzf). Uso: vm [-u USUARIO] [filtro
         return
     end
 
-    set -q VM_LOG_DIR; or set -g VM_LOG_DIR "$HOME/.local/share/vm-logs"
+    if not set -q VM_LOG_DIR
+        set -g VM_LOG_DIR /tmp/vm-logs
+        echo "⚠  VM_LOG_DIR no definido, logueando en /tmp/vm-logs"
+    end
     set -l dir "$VM_LOG_DIR/$host"
     mkdir -p $dir
 
