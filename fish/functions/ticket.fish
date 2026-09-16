@@ -1,4 +1,8 @@
 function ticket --description 'Crea una entrada en 01-Tickets. Uso: ticket <asunto>'
+    if not set -q OPS_BASE
+        echo "OPS_BASE no está definido. Corré: set -Ux OPS_BASE <ruta del repo>"
+        return 1
+    end
     set -q TICKET_URL_BASE; or set -l TICKET_URL_BASE ""
     if test (count $argv) -eq 0
         echo "uso: ticket <asunto del requerimiento o falla>"

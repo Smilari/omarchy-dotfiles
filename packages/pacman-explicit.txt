@@ -8,6 +8,7 @@ alsa-plugins
 alsa-utils
 amd-ucode
 ansible
+anydesk-bin
 apple-fonts
 asdcontrol
 avahi

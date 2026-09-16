@@ -1,7 +1,7 @@
 # Helpers compartidos por `ticket` y `task`.
 # Cargar con: source ~/.config/fish/functions/__ops_common.fish
 
-set -q OPS_BASE; or set -gx OPS_BASE "$HOME/ops"
+# OPS_BASE se define como variable universal: set -Ux OPS_BASE <ruta>
 
 function __ops_mes --description 'Devuelve MM-Mes en español, sin depender del locale'
     set -l meses enero febrero marzo abril mayo junio julio agosto septiembre octubre noviembre diciembre

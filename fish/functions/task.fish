@@ -1,4 +1,8 @@
 function task --description 'Crea una entrada en 02-Tareas (Planner). Uso: task <asunto>'
+    if not set -q OPS_BASE
+        echo "OPS_BASE no está definido. Corré: set -Ux OPS_BASE <ruta del repo>"
+        return 1
+    end
     if test (count $argv) -eq 0
         echo "uso: task <nombre de la tarjeta del Planner>"
         return 1
