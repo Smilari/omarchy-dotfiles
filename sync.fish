@@ -8,11 +8,9 @@ cd $REPO
 
 echo "== fish"
 mkdir -p fish/functions fish/completions
-for f in vm vmx vmfs vmrun copy cls gf vpn vpn-dns __vm_list ticket task __ops_common
-    if test -f ~/.config/fish/functions/$f.fish
-        cp ~/.config/fish/functions/$f.fish fish/functions/
-        echo "   $f.fish"
-    end
+for f in ~/.config/fish/functions/*.fish
+    cp $f fish/functions/
+    echo "   "(basename $f)
 end
 cp ~/.config/fish/completions/*.fish fish/completions/ 2>/dev/null
 cp ~/.config/fish/config.fish fish/config.fish
