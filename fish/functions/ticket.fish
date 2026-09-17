@@ -45,6 +45,7 @@ function ticket --description 'Crea una entrada en 01-Tickets. Uso: ticket <asun
     set -l f "$dir/README.md"
     if test -f $f
         echo "ya existe: $f"
+        cd $dir
         __ops_open $f
         return 0
     end
@@ -80,5 +81,6 @@ function ticket --description 'Crea una entrada en 01-Tickets. Uso: ticket <asun
         > $f
 
     echo "→ $f"
+    cd $dir
     __ops_open $f
 end

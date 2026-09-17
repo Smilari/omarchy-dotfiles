@@ -29,6 +29,7 @@ function task --description 'Crea una entrada en 02-Tareas (Planner). Uso: task 
     set -l f "$dir/README.md"
     if test -f $f
         echo "ya existe: $f"
+        cd $dir
         __ops_open $f
         return 0
     end
@@ -74,5 +75,6 @@ function task --description 'Crea una entrada en 02-Tareas (Planner). Uso: task 
         > $f
 
     echo "→ $f"
+    cd $dir
     __ops_open $f
 end

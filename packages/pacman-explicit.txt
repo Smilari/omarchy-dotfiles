@@ -161,6 +161,8 @@ linux-cachyos-headers
 linux-cachyos-lts
 linux-cachyos-lts-headers
 linux-firmware
+linux-omarchy
+linux-omarchy-headers
 llvm
 localsend
 logrotate
