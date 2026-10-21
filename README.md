@@ -91,7 +91,12 @@ su cuenta. Sin esa configuración no tienen a dónde conectarse.
 | `vmx <filtro>` | Abre varios hosts en panes de tmux sincronizados |
 | `vmfs <host> [ruta]` / `vmfs-u` | Monta y desmonta el filesystem remoto vía sshfs |
 | `gf <host>` | Estado de un servicio GlassFish y sus instancias |
+| `myq [-f] "<sql>"|archivo.sql <host>…` | Ejecuta SQL en uno o varios MySQL por SSH; pide confirmación si detecta escritura sobre producción |
 | `vpn-up` / `vpn-down` / `vpn-status` | Levanta una VPN Forti vía systemd y fija los dominios DNS |
+
+`myq` no selecciona base: prefijá `USE <base>;` o pasalo en el `.sql`.
+Autentica con `sudo` contra `/root/.my.cnf` (o `/etc/mysql/debian.cnf` como
+fallback); si esas credenciales rotan, hay que actualizarlas en cada nodo.
 
 ### Notas de trabajo
 
@@ -99,8 +104,9 @@ su cuenta. Sin esa configuración no tienen a dónde conectarse.
 | --- | --- |
 | `ticket <asunto>` | Crea una entrada de bitácora con selector de categoría |
 | `task <asunto>` | Ídem, para tareas más largas |
+| `ops [filtro]` | Selector fzf de entradas de bitácora; deja la shell parada en la carpeta |
 
-Ambos escriben en el directorio que indique `$OPS_BASE`.
+`ticket` y `task` escriben en el directorio que indique `$OPS_BASE`; `ops` navega ese mismo árbol.
 
 ---
 
