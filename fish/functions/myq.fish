@@ -8,8 +8,9 @@ function myq --description 'SQL en uno o varios MySQL por SSH. Uso: myq [-f] "<s
     if test (count $argv) -lt 2
         echo 'uso: myq [-f] "<sql>" | archivo.sql   host [host...]'
         echo '  -f  salta la confirmación de escritura en PRD'
-        echo 'ej:  myq "SHOW SLAVE STATUS\\G" prd-bbdd-slave'
-        echo '     myq consultas/slow.sql prd-bbdd-master | copy'
+        echo 'ej:  myq "USE sigehos; SELECT COUNT(*) FROM auth_user" prd-bbdd-master'
+        echo '     myq "SHOW SLAVE STATUS\\G" prd-bbdd-slave'
+        echo '     myq consultas/migracion.sql hml-bbdd01 | copy'
         return 1
     end
 
@@ -17,20 +18,22 @@ function myq --description 'SQL en uno o varios MySQL por SSH. Uso: myq [-f] "<s
     test -f "$sql"; and set sql (cat $sql | string collect)
     set -l hosts $argv[2..-1]
 
-    # ¿la primera sentencia es de solo lectura? (heurística, -f la saltea)
-    set -l primera (string upper -- (string trim -- (string split -n \n -- $sql)[1]))
-    set -l solo_lectura 0
-    if string match -qr '^(SELECT|SHOW|DESC|DESCRIBE|EXPLAIN|WITH|USE)' -- "$primera"
-        set solo_lectura 1
-    end
+    # Busca escritura en TODO el SQL, no solo en la primera sentencia:
+    # un .sql de los devs puede traer el DELETE en el medio.
+    set -l escritura (string match -ragi \
+        '\b(UPDATE|DELETE|INSERT|REPLACE|DROP|ALTER|TRUNCATE|CREATE|GRANT|REVOKE|SET +PASSWORD)\b' \
+        -- $sql)
 
-    # confirmación si hay escritura sobre producción
     set -l en_prd (string match -r '^prd.*' -- $hosts)
-    if test (count $en_prd) -gt 0 -a $solo_lectura -eq 0 -a $force -eq 0
+    if test (count $en_prd) -gt 0 -a (count $escritura) -gt 0 -a $force -eq 0
         set_color -o red
-        echo "⚠  SQL de ESCRITURA sobre PRODUCCIÓN: $en_prd"
+        echo "⚠  SQL con ESCRITURA sobre PRODUCCIÓN: $en_prd"
         set_color normal
-        echo "   $primera"
+        echo "   detectado: "(string upper -- (string join ', ' -- $escritura))
+        echo "   líneas:"
+        string split -n \n -- $sql \
+            | string match -rgi '^(.*\b(?:UPDATE|DELETE|INSERT|REPLACE|DROP|ALTER|TRUNCATE|CREATE|GRANT|REVOKE)\b.*)$' \
+            | head -5 | sed 's/^/     /'
         read -P "   escribí SI para continuar: " confirmacion
         if test "$confirmacion" != SI
             echo "cancelado"
