@@ -1,6 +1,5 @@
 anydesk-bin
 apple-fonts
 bibata-cursor-theme
-google-chrome
 ticktick
 warp-terminal-bin

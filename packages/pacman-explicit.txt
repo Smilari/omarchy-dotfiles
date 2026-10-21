@@ -99,10 +99,12 @@ fish-autopair
 fisher
 fontconfig
 foot
+freerdp
 fsarchiver
 fzf
 git
 github-cli
+gitleaks
 glances
 gnome-disk-utility
 gnome-keyring
@@ -121,7 +123,7 @@ gvfs-nfs
 gvfs-smb
 hdparm
 herdr
-heroic-games-launcher-bin
+heroic-games-launcher
 hwdetect
 hwinfo
 hyprland
