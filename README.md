@@ -91,7 +91,7 @@ su cuenta. Sin esa configuración no tienen a dónde conectarse.
 | `vmx <filtro>` | Abre varios hosts en panes de tmux sincronizados |
 | `vmfs <host> [ruta]` / `vmfs-u` | Monta y desmonta el filesystem remoto vía sshfs |
 | `gf <host>` | Estado de un servicio GlassFish y sus instancias |
-| `myq [-f] "<sql>"|archivo.sql <host>…` | Ejecuta SQL en uno o varios MySQL por SSH; pide confirmación si detecta escritura sobre producción |
+| `myq [-f] "<sql>"\|archivo.sql <host>…` | Ejecuta SQL en uno o varios MySQL por SSH; pide confirmación si detecta escritura sobre producción |
 | `vpn-up` / `vpn-down` / `vpn-status` | Levanta una VPN Forti vía systemd y fija los dominios DNS |
 
 `myq` no selecciona base: prefijá `USE <base>;` o pasalo en el `.sql`.
