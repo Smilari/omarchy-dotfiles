@@ -102,11 +102,17 @@ fallback); si esas credenciales rotan, hay que actualizarlas en cada nodo.
 
 | Comando | Qué hace |
 | --- | --- |
-| `ticket <asunto>` | Crea una entrada de bitácora con selector de categoría |
-| `task <asunto>` | Ídem, para tareas más largas |
-| `ops [filtro]` | Selector fzf de entradas de bitácora; deja la shell parada en la carpeta |
+| `work [filtro]` | Selector fzf de items con preview; deja la shell parada en la carpeta del item |
+| `work new <slug> [-p <padre>]` | Crea un item (`README.md` + `log.md`), opcionalmente hijo de otro |
+| `work close <slug>` | Marca el item como cerrado y lo mueve a `archive/` |
+| `work index` | Regenera el índice de items en el `README.md` raíz |
+| `planner token` / `plans` / `sync` | Lee planners de Microsoft vía Graph (solo lectura) y los baja como Markdown |
 
-`ticket` y `task` escriben en el directorio que indique `$OPS_BASE`; `ops` navega ese mismo árbol.
+Las dos funciones trabajan sobre el repo que indique `$OPS_BASE` y delegan en
+scripts que viven en ese repo, no en este: `work` usa `tools/work-index.py` y
+`planner` usa `tools/planner.py` (con la lista de planners en `tools/planners.tsv`).
+`planner token` toma un access token de Graph Explorer del portapapeles; dura
+alrededor de una hora y queda solo en la sesión, nunca en una variable universal.
 
 ---
 
