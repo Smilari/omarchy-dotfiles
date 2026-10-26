@@ -20,6 +20,7 @@ function __vm_list --description 'Lista los alias SSH con entorno, descripción 
                     split(l, a, " "); ip = a[2]
                 }
             }
+            if (env == "") env = "-"
             if (host != "") printf "%-4s %-30s %-34s %s\n", env, host, desc, ip
         }
     ' ~/.ssh/config.d/*.conf

@@ -19,7 +19,7 @@ function vm --description 'Conectar a una VM (fzf). Uso: vm [-u USUARIO] [filtro
         --prompt 'ssh> ' --height 70% --reverse --border \
         --header 'Enter: conectar   Ctrl-U: elegir otro usuario   Ctrl-C: salir' \
         --expect ctrl-u \
-        --preview 'ssh -G {1} | grep -E "^(hostname|user|port) "' \
+        --preview 'ssh -G {2} | grep -E "^(hostname|user|port) "' \
         --preview-window up:4:border-rounded \
         --color 'hl:red,hl+:red' \
         --query "$query")
