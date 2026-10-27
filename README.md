@@ -106,7 +106,7 @@ fallback); si esas credenciales rotan, hay que actualizarlas en cada nodo.
 | `work new <slug> [-p <padre>]` | Crea un item (`README.md` + `log.md`), opcionalmente hijo de otro |
 | `work close <slug>` | Marca el item como cerrado y lo mueve a `archive/` |
 | `work index` | Regenera el índice de items en el `README.md` raíz |
-| `planner token` / `plans` / `sync` | Lee planners de Microsoft vía Graph (solo lectura) y los baja como Markdown |
+| `planner token` / `plans` / `sync` / `apply` | Lee planners de Microsoft vía Graph y los baja como Markdown; `apply` escribe cambios con simulacro y confirmación |
 
 Las dos funciones trabajan sobre el repo que indique `$OPS_BASE` y delegan en
 scripts que viven en ese repo, no en este: `work` usa `tools/work-index.py` y
