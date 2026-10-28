@@ -107,10 +107,11 @@ fallback); si esas credenciales rotan, hay que actualizarlas en cada nodo.
 | `work close <slug>` | Marca el item como cerrado y lo mueve a `archive/` |
 | `work index` | Regenera el índice de items en el `README.md` raíz |
 | `planner token` / `plans` / `sync` / `apply` | Lee planners de Microsoft vía Graph y los baja como Markdown; `apply` escribe cambios con simulacro y confirmación |
+| `teams lista` / `dump` / `buscar` | Lee mensajes de chats y canales de Teams vía Graph y los baja como Markdown |
 
 Las dos funciones trabajan sobre el repo que indique `$OPS_BASE` y delegan en
 scripts que viven en ese repo, no en este: `work` usa `tools/work-index.py` y
-`planner` usa `tools/planner.py` (con la lista de planners en `tools/planners.tsv`).
+`planner` usa `tools/planner.py` (con la lista de planners en `tools/planners.tsv`) y `teams`, `tools/teams.py`.
 `planner token` toma un access token de Graph Explorer del portapapeles; dura
 alrededor de una hora y queda solo en la sesión, nunca en una variable universal.
 
