@@ -13,7 +13,3 @@ function copy --description 'Copia stdin (o un archivo) al portapapeles. Uso: cm
         rm -f $tmp
     end
 end
-
-function paste --description 'Pega el portapapeles a stdout'
-    wl-paste
-end

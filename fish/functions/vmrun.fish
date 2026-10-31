@@ -9,16 +9,38 @@ function vmrun --description 'Ejecuta un comando en una VM y trae la salida loca
     ssh $host "$cmd"
 end
 
-function vmrunx --description 'Ejecuta el mismo comando en varias VMs. Uso: vmrunx "<comando>" host1 host2 ...'
+function vmrunx --description 'Ejecuta el mismo comando en varias VMs. Uso: vmrunx [-p] "<comando>" host1 host2 ...'
+    set -l paralelo 0
+    if test "$argv[1]" = -p
+        set paralelo 1
+        set -e argv[1]
+    end
     if test (count $argv) -lt 2
-        echo 'uso: vmrunx "<comando>" <alias> [alias...]'
-        echo 'ej:  vmrunx "uptime" prd-his-0{1,2,3} | copy'
+        echo 'uso: vmrunx [-p] "<comando>" <alias> [alias...]'
+        echo '  -p  corre en todos a la vez; la salida sale igual, agrupada por host y en orden'
+        echo 'ej:  vmrunx -p "uptime" prd-his-0{1,2,3,5,6,7,8,9} | copy'
         return 1
     end
     set -l cmd $argv[1]
-    for h in $argv[2..-1]
+    set -l hosts $argv[2..-1]
+    if test $paralelo -eq 0
+        for h in $hosts
+            echo "===== $h ====="
+            ssh -n $h "$cmd" 2>&1
+            echo
+        end
+        return
+    end
+    set -l tmp (mktemp -d)
+    for h in $hosts
+        # BatchMode: si un host pidiera contraseña, falla en vez de quedar colgado en segundo plano.
+        ssh -n -o BatchMode=yes $h "$cmd" >$tmp/$h 2>&1 &
+    end
+    wait
+    for h in $hosts
         echo "===== $h ====="
-        ssh -n $h "$cmd" 2>&1
+        cat $tmp/$h
         echo
     end
+    rm -rf $tmp
 end

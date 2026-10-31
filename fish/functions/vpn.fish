@@ -3,15 +3,23 @@ set -q VPN_PROFILE; or set -g VPN_PROFILE default
 set -q VPN_DOMAINS; or set -g VPN_DOMAINS ""
 set -q VPN_DNS_TEST; or set -g VPN_DNS_TEST example.internal
 
+function __vpn_iface
+    ip -o link show 2>/dev/null | grep -oP ': \Kppp\d+' | head -1
+end
+
 function vpn-up --description 'Levanta la VPN Forti y fija los dominios DNS internos'
     sudo systemctl start openfortivpn@$VPN_PROFILE
 
-    # esperar a que ppp0 exista Y tenga los DNS internos registrados
+    # Esperar a que aparezca la interfaz ppp y tenga los DNS que empuja la VPN.
     for i in (seq 20)
-        if resolvectl status 2>/dev/null | grep -q '10.10.1.180'
-            vpn-dns
-            echo "VPN arriba"
-            return 0
+        set -l iface (__vpn_iface)
+        if test -n "$iface"
+            set -l dns (resolvectl dns $iface 2>/dev/null | string replace -r '^[^:]*:' '' | string trim)
+            if test -n "$dns"
+                vpn-dns
+                echo "VPN arriba"
+                return 0
+            end
         end
         sleep 1
     end
@@ -25,13 +33,19 @@ function vpn-down --description 'Baja la VPN Forti'
 end
 
 function vpn-status --description 'Estado de la VPN, IP y DNS interno'
+    set -l iface (__vpn_iface)
     echo -n "servicio: "; systemctl is-active openfortivpn@$VPN_PROFILE
-    echo -n "ppp0:     "; ip -4 addr show ppp0 2>/dev/null | grep -oP 'inet \K[\d.]+'; or echo "sin ppp0"
-    echo -n "dominios: "; resolvectl domain ppp0 2>/dev/null | cut -d: -f2-; or echo "-"
+    if test -z "$iface"
+        echo "interfaz: sin ppp"
+        return 1
+    end
+    echo -n "$iface:     "; ip -4 addr show $iface 2>/dev/null | grep -oP 'inet \K[\d.]+'
+    echo -n "dominios: "; resolvectl domain $iface 2>/dev/null | cut -d: -f2-
     echo -n "dns test: "; resolvectl query $VPN_DNS_TEST 2>&1 | head -1
 end
+
 function vpn-dns --description 'Fija los dominios de búsqueda internos en la interfaz de la VPN'
-    set -l iface (ip -o link show 2>/dev/null | grep -oP ': \Kppp\d+' | head -1)
+    set -l iface (__vpn_iface)
     if test -z "$iface"
         echo "VPN no detectada"; return 1
     end

@@ -1,0 +1,7 @@
+complete -c planner -f -n '__fish_use_subcommand' -a sync -d 'bajar las fotos y mostrar qué cambió'
+complete -c planner -f -n '__fish_use_subcommand' -a apply -d 'aplicar un archivo de cambios (simulacro primero)'
+complete -c planner -f -n '__fish_use_subcommand' -a plans -d 'listar planners'
+complete -c planner -f -n '__fish_use_subcommand' -a dump -d 'un planner a markdown'
+complete -c planner -f -n '__fish_use_subcommand' -a token -d 'atajo de graph token'
+complete -c planner -f -n '__fish_seen_subcommand_from apply' -a '(path filter -f $OPS_BASE/logs/planner/*.yaml)'
+complete -c planner -f -n '__fish_seen_subcommand_from apply' -l si -d 'aplicar sin preguntar'

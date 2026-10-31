@@ -11,9 +11,5 @@ function vmfs --description 'Montar el FS de una VM con sshfs. Uso: vmfs <alias>
     mkdir -p $mnt
     sshfs -o reconnect,ServerAliveInterval=15,ServerAliveCountMax=3,follow_symlinks,idmap=user \
         $host:$rpath $mnt; or return 1
-    echo "$host:$rpath → $mnt"
-end
-
-function vmfs-u --description 'Desmontar un sshfs. Uso: vmfs-u <alias>'
-    fusermount3 -u "$HOME/mnt/$argv[1]"; and rmdir "$HOME/mnt/$argv[1]"
+    echo "$host:$rpath → $mnt   (desmontar: vmfs-u $host)"
 end

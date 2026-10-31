@@ -1,0 +1,5 @@
+complete -c work -f -n '__fish_use_subcommand' -a new -d 'crear un item'
+complete -c work -f -n '__fish_use_subcommand' -a close -d 'cerrar y archivar un item'
+complete -c work -f -n '__fish_use_subcommand' -a index -d 'regenerar el índice'
+complete -c work -f -n '__fish_seen_subcommand_from close' -a '(path basename $OPS_BASE/work/*)'
+complete -c work -f -n '__fish_seen_subcommand_from new' -s p -l parent -r -a '(path basename $OPS_BASE/work/*)' -d 'item padre'

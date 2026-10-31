@@ -1,4 +1,4 @@
-function work --description 'Bitácora: work [filtro] | work new <slug> [-p padre] | work close <slug> | work index'
+function work --description 'Bitácora: work [filtro] | work new <slug> ["Título"] [-p padre] | work close <slug> | work index'
     if not set -q OPS_BASE
         echo "OPS_BASE no está definido. Corré: set -Ux OPS_BASE <ruta del repo>"
         return 1
@@ -7,19 +7,33 @@ function work --description 'Bitácora: work [filtro] | work new <slug> [-p padr
 
     switch "$argv[1]"
         case new
-            set -l slug $argv[2]
-            if test -z "$slug"
-                echo "uso: work new <slug> [-p <padre>]"
-                return 1
-            end
+            set -l slug ""
+            set -l titulo ""
             set -l parent —
-            if test "$argv[3]" = -p -a -n "$argv[4]"
-                set parent $argv[4]
-                if not test -d $base/$parent
-                    echo "no existe el padre: $parent"
-                    return 1
+            set -l resto $argv[2..-1]
+            while test (count $resto) -gt 0
+                switch $resto[1]
+                    case -p --parent
+                        set parent $resto[2]
+                        set -e resto[1..2]
+                    case '*'
+                        if test -z "$slug"
+                            set slug $resto[1]
+                        else
+                            set titulo $resto[1]
+                        end
+                        set -e resto[1]
                 end
             end
+            if test -z "$slug"
+                echo 'uso: work new <slug> ["Título"] [-p <padre>]'
+                return 1
+            end
+            if test "$parent" != — -a ! -d "$base/$parent"
+                echo "no existe el padre: $parent"
+                return 1
+            end
+            test -z "$titulo"; and set titulo $slug
             set -l dir $base/$slug
             if test -e $dir
                 echo "ya existe: $dir"
@@ -32,15 +46,15 @@ function work --description 'Bitácora: work [filtro] | work new <slug> [-p padr
                 'estado: activo' \
                 'esperando: —' "parent: $parent" 'planner: —' 'noc: —' 'mda: —' \
                 "actualizado: $hoy" --- \
-                "# $slug" '' '## TL;DR' '' '## Próximo paso' '' \
+                "# $titulo" '' '## TL;DR' '' '## Próximo paso' '' \
                 '## Pendientes' '' '- [ ] ' '' '## Decisiones' '' '## Referencias' '' >$dir/README.md
-            printf '# Log — %s\n\nLo más nuevo abajo.\n\n- %s — Creado.\n' $slug $hoy >$dir/log.md
+            printf '# Log — %s\n\n- %s — Creado.\n' $titulo $hoy >$dir/log.md
             cd $dir
             $EDITOR README.md
 
         case close
             set -l slug $argv[2]
-            if not test -d $base/$slug
+            if test -z "$slug" -o ! -d "$base/$slug"
                 echo "no existe: $slug"
                 return 1
             end
@@ -57,7 +71,10 @@ function work --description 'Bitácora: work [filtro] | work new <slug> [-p padr
         case '*'
             set -l sel (python3 $OPS_BASE/tools/work-index.py --list \
                 | fzf --prompt 'work> ' --height 70% --reverse --border \
+                      --header 'Enter: ir a la carpeta · Ctrl-E: README · Ctrl-L: log' \
                       --delimiter \t --with-nth 2 --ansi --query "$argv" \
+                      --bind "ctrl-e:execute($EDITOR $base/{1}/README.md)" \
+                      --bind "ctrl-l:execute($EDITOR $base/{1}/log.md)" \
                       --preview "python3 $OPS_BASE/tools/work-index.py --preview {1}" \
                       --preview-window 'right,60%,wrap,<110(down,65%,wrap)')
             test -z "$sel"; and return 1

@@ -48,11 +48,8 @@ function vm --description 'Conectar a una VM (fzf). Uso: vm [-u USUARIO] [filtro
         return
     end
 
-    if not set -q VM_LOG_DIR
-        set -g VM_LOG_DIR /tmp/vm-logs
-        echo "⚠  VM_LOG_DIR no definido, logueando en /tmp/vm-logs"
-    end
-    set -l dir "$VM_LOG_DIR/$host"
+    set -l logdir (__vm_logdir)
+    set -l dir "$logdir/$host"
     mkdir -p $dir
 
     # OJO: en fish, concatenar una substitución vacía anula TODA la cadena.
@@ -63,5 +60,5 @@ function vm --description 'Conectar a una VM (fzf). Uso: vm [-u USUARIO] [filtro
     set -l f "$dir/$stamp$suffix.log"
 
     script -q -c "ssh $target" $f
-    echo "log → $f"
+    echo "log → $f   (verlo limpio: vmlog $host)"
 end

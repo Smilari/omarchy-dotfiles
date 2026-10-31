@@ -76,7 +76,6 @@ lista los pasos que quedan a mano (clave SSH, credenciales, variables de entorno
 | --- | --- |
 | `cls` | Limpia pantalla y scrollback, también dentro de tmux |
 | `<cmd> \| copy` | Manda la salida al portapapeles (Wayland) |
-| `paste` | Vuelca el portapapeles a stdout |
 
 ### Acceso a servidores
 
@@ -85,14 +84,15 @@ su cuenta. Sin esa configuración no tienen a dónde conectarse.
 
 | Comando | Qué hace |
 | --- | --- |
-| `vm [-u usuario] [filtro]` | Selector fzf de hosts; graba la sesión en un log |
+| `vm [-u usuario] [filtro]` | Selector fzf de hosts; graba la sesión en `$VM_LOG_DIR/<host>/` (por defecto `$OPS_BASE/logs/ssh`) |
+| `vmlog [host]` | Elige una sesión grabada, la muestra sin códigos de terminal y deja una copia `.txt` al lado |
 | `vmrun <host> '<cmd>'` | Ejecuta un comando remoto y trae la salida local |
-| `vmrunx '<cmd>' <host>…` | El mismo comando en varios hosts, con separadores |
+| `vmrunx [-p] '<cmd>' <host>…` | El mismo comando en varios hosts, con separadores; `-p` los corre en paralelo |
 | `vmx <filtro>` | Abre varios hosts en panes de tmux sincronizados |
-| `vmfs <host> [ruta]` / `vmfs-u` | Monta y desmonta el filesystem remoto vía sshfs |
+| `vmfs <host> [ruta]` / `vmfs-u [host]` | Monta y desmonta el filesystem remoto vía sshfs (`vmfs-u` sin host elige de los montados) |
 | `gf <host>` | Estado de un servicio GlassFish y sus instancias |
 | `myq [-f] "<sql>"\|archivo.sql <host>…` | Ejecuta SQL en uno o varios MySQL por SSH; pide confirmación si detecta escritura sobre producción |
-| `vpn-up` / `vpn-down` / `vpn-status` | Levanta una VPN Forti vía systemd y fija los dominios DNS |
+| `vpn-up` / `vpn-down` / `vpn-status` | Levanta una VPN Forti vía systemd y fija los dominios DNS (espera a que la interfaz ppp tenga DNS) |
 
 `myq` no selecciona base: prefijá `USE <base>;` o pasalo en el `.sql`.
 Autentica con `sudo` contra `/root/.my.cnf` (o `/etc/mysql/debian.cnf` como
@@ -103,17 +103,18 @@ fallback); si esas credenciales rotan, hay que actualizarlas en cada nodo.
 | Comando | Qué hace |
 | --- | --- |
 | `work [filtro]` | Selector fzf de items con preview; deja la shell parada en la carpeta del item |
-| `work new <slug> [-p <padre>]` | Crea un item (`README.md` + `log.md`), opcionalmente hijo de otro |
+| `work new <slug> ["Título"] [-p <padre>]` | Crea un item (`README.md` + `log.md`), opcionalmente hijo de otro. En el selector, `Ctrl-E` abre el README y `Ctrl-L` el log |
 | `work close <slug>` | Marca el item como cerrado y lo mueve a `archive/` |
 | `work index` | Regenera el índice de items en el `README.md` raíz |
-| `planner token` / `plans` / `sync` / `apply` | Lee planners de Microsoft vía Graph y los baja como Markdown; `apply` escribe cambios con simulacro y confirmación |
-| `teams lista` / `dump` / `buscar` | Lee mensajes de chats y canales de Teams vía Graph y los baja como Markdown |
+| `graph login` / `token` / `estado` / `logout` | Token de Microsoft Graph compartido por todas las terminales; `login` lo renueva solo |
+| `planner plans` / `sync` / `apply` | Baja planners de Microsoft como Markdown y muestra qué cambió; `apply` escribe cambios con simulacro y confirmación |
+| `teams sync` / `lista` / `dump` / `buscar` | Chats grupales de Teams (guardados en OneDrive por Power Automate) a Markdown; `sync` muestra qué llegó |
 
-Las dos funciones trabajan sobre el repo que indique `$OPS_BASE` y delegan en
-scripts que viven en ese repo, no en este: `work` usa `tools/work-index.py` y
-`planner` usa `tools/planner.py` (con la lista de planners en `tools/planners.tsv`) y `teams`, `tools/teams.py`.
-`planner token` toma un access token de Graph Explorer del portapapeles; dura
-alrededor de una hora y queda solo en la sesión, nunca en una variable universal.
+Estas funciones trabajan sobre el repo que indique `$OPS_BASE` y delegan en
+scripts que viven en ese repo, no en este: `tools/work-index.py`, `tools/graph.py`,
+`tools/planner.py` (con la lista de planners en `tools/planners.tsv`) y `tools/teams.py`.
+El token de Graph se guarda en `$XDG_RUNTIME_DIR` (en memoria, se borra al cerrar
+sesión); el refresh token de `graph login`, en `~/.local/state/dgsisan-graph/` con permisos 600.
 
 ---
 

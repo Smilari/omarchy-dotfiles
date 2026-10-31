@@ -17,5 +17,10 @@ function vmx --description 'Multi-exec: abre N VMs en panes tmux sincronizados (
         tmux select-layout -t $win tiled
     end
     tmux set-window-option -t $win synchronize-panes on
-    tmux attach -t $win
+    # Dentro de tmux no se puede hacer attach (sesión anidada): se cambia de sesión.
+    if set -q TMUX
+        tmux switch-client -t $win
+    else
+        tmux attach -t $win
+    end
 end
