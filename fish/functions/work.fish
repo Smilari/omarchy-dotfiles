@@ -1,4 +1,4 @@
-function work --description 'Bitácora: work [filtro] | work new <slug> ["Título"] [-p padre] | work close <slug> | work index'
+function work --description 'Bitácora: work [filtro] | new <slug> ["Título"] [-p padre] | log [slug] "texto" | close <slug> | index'
     if not set -q OPS_BASE
         echo "OPS_BASE no está definido. Corré: set -Ux OPS_BASE <ruta del repo>"
         return 1
@@ -52,6 +52,29 @@ function work --description 'Bitácora: work [filtro] | work new <slug> ["Títul
             cd $dir
             $EDITOR README.md
 
+        case log
+            # work log "texto" (parado en la carpeta del item) o work log <slug> "texto"
+            set -l slug ""
+            set -l texto ""
+            if test (count $argv) -ge 3
+                set slug $argv[2]
+                set texto $argv[3..-1]
+            else
+                set texto $argv[2]
+                set -l aqui (string replace -r "^$base/" '' -- (pwd))
+                if test "$aqui" != (pwd)
+                    set slug (string split -f1 / -- $aqui)
+                end
+            end
+            if test -z "$slug" -o ! -f "$base/$slug/log.md" -o -z "$texto"
+                echo 'uso: work log "texto"   (dentro del item)   o   work log <slug> "texto"'
+                return 1
+            end
+            set -l hoy (date +%F)
+            printf '- %s — %s\n' $hoy (string join ' ' -- $texto) >>$base/$slug/log.md
+            sed -i -E "s/^actualizado:.*/actualizado: $hoy/" $base/$slug/README.md
+            tail -1 $base/$slug/log.md
+
         case close
             set -l slug $argv[2]
             if test -z "$slug" -o ! -d "$base/$slug"
@@ -60,7 +83,7 @@ function work --description 'Bitácora: work [filtro] | work new <slug> ["Títul
             end
             set -l hoy (date +%F)
             sed -i -E "s/^estado:.*/estado: cerrado/; s/^actualizado:.*/actualizado: $hoy/" $base/$slug/README.md
-            printf -- '- %s — Cerrado.\n' $hoy >>$base/$slug/log.md
+            printf '- %s — Cerrado.\n' $hoy >>$base/$slug/log.md
             git -C $OPS_BASE mv work/$slug archive/$slug; or return 1
             work index
             echo "→ archive/$slug"
@@ -73,8 +96,8 @@ function work --description 'Bitácora: work [filtro] | work new <slug> ["Títul
                 | fzf --prompt 'work> ' --height 70% --reverse --border \
                       --header 'Enter: ir a la carpeta · Ctrl-E: README · Ctrl-L: log' \
                       --delimiter \t --with-nth 2 --ansi --query "$argv" \
-                      --bind "ctrl-e:execute($EDITOR $base/{1}/README.md)" \
-                      --bind "ctrl-l:execute($EDITOR $base/{1}/log.md)" \
+                      --bind "ctrl-e:execute(nano $base/{1}/README.md)" \
+                      --bind "ctrl-l:execute(nano $base/{1}/log.md)" \
                       --preview "python3 $OPS_BASE/tools/work-index.py --preview {1}" \
                       --preview-window 'right,60%,wrap,<110(down,65%,wrap)')
             test -z "$sel"; and return 1
