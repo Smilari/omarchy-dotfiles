@@ -5,3 +5,6 @@ complete -c planner -f -n '__fish_use_subcommand' -a dump -d 'un planner a markd
 complete -c planner -f -n '__fish_use_subcommand' -a token -d 'atajo de graph token'
 complete -c planner -f -n '__fish_seen_subcommand_from apply' -a '(path filter -f $OPS_BASE/logs/planner/*.yaml)'
 complete -c planner -f -n '__fish_seen_subcommand_from apply' -l si -d 'aplicar sin preguntar'
+complete -c planner -f -n '__fish_use_subcommand' -a nuevo -d 'crear un planner en el grupo de otro'
+complete -c planner -f -n '__fish_seen_subcommand_from nuevo' -l como -r -d 'planner de referencia (grupo)'
+complete -c planner -f -n '__fish_seen_subcommand_from nuevo' -l buckets-de -r -a '(path filter -f $OPS_BASE/logs/planner/*.yaml)'
