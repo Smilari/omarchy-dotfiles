@@ -50,7 +50,7 @@ function work --description 'Bitácora: work [filtro] | new <slug> ["Título"] [
                 '## Pendientes' '' '- [ ] ' '' '## Decisiones' '' '## Referencias' '' >$dir/README.md
             printf '# Log — %s\n\n- %s — Creado.\n' $titulo $hoy >$dir/log.md
             cd $dir
-            $EDITOR README.md
+            nano README.md
 
         case log
             # work log "texto" (parado en la carpeta del item) o work log <slug> "texto"

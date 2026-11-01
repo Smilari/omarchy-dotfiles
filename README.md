@@ -106,15 +106,15 @@ fallback); si esas credenciales rotan, hay que actualizarlas en cada nodo.
 | `work new <slug> ["Título"] [-p <padre>]` | Crea un item (`README.md` + `log.md`), opcionalmente hijo de otro. En el selector, `Ctrl-E` abre el README y `Ctrl-L` el log |
 | `work close <slug>` | Marca el item como cerrado y lo mueve a `archive/` |
 | `work index` | Regenera el índice de items en el `README.md` raíz |
-| `graph login` / `token` / `estado` / `logout` | Token de Microsoft Graph compartido por todas las terminales; `login` lo renueva solo |
+| `graph token` / `estado` / `logout` | Token de Microsoft Graph (el de Graph Explorer, ~24 h) compartido por todas las terminales |
 | `planner plans` / `sync` / `apply` | Baja planners de Microsoft como Markdown y muestra qué cambió; `apply` escribe cambios con simulacro y confirmación |
 | `teams sync` / `lista` / `dump` / `buscar` | Chats grupales de Teams (guardados en OneDrive por Power Automate) a Markdown; `sync` muestra qué llegó |
 
 Estas funciones trabajan sobre el repo que indique `$OPS_BASE` y delegan en
 scripts que viven en ese repo, no en este: `tools/work-index.py`, `tools/graph.py`,
 `tools/planner.py` (con la lista de planners en `tools/planners.tsv`) y `tools/teams.py`.
-El token de Graph se guarda en `$XDG_RUNTIME_DIR` (en memoria, se borra al cerrar
-sesión); el refresh token de `graph login`, en `~/.local/state/dgsisan-graph/` con permisos 600.
+El token de Graph se guarda en `$XDG_RUNTIME_DIR` (en memoria, permisos 600): sobrevive a
+cerrar terminales y se borra al cerrar sesión o reiniciar.
 
 ---
 
