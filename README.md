@@ -108,11 +108,12 @@ fallback); si esas credenciales rotan, hay que actualizarlas en cada nodo.
 | `work index` | Regenera el índice de items en el `README.md` raíz |
 | `graph token` / `estado` / `logout` | Token de Microsoft Graph (el de Graph Explorer, ~24 h) compartido por todas las terminales |
 | `planner plans` / `sync` / `apply` | Baja planners de Microsoft como Markdown y muestra qué cambió; `apply` escribe cambios con simulacro y confirmación |
+| `snapshot <perfil> <amb> [etiqueta]` / `diff` / `lista` | Fotos de estado de VMs antes y después de una maniobra |
 | `teams sync` / `lista` / `dump` / `buscar` / `md` | Chats grupales de Teams y MD elegidos (guardados en OneDrive por Power Automate) a Markdown; `sync` muestra qué llegó |
 
 Estas funciones trabajan sobre el repo que indique `$OPS_BASE` y delegan en
 scripts que viven en ese repo, no en este: `tools/work-index.py`, `tools/graph.py`,
-`tools/planner.py` (con la lista de planners en `tools/planners.tsv`) y `tools/teams.py`.
+`tools/planner.py` (con la lista de planners en `tools/planners.tsv`), `tools/teams.py` y `tools/snapshot.py`.
 El token de Graph se guarda en `$XDG_RUNTIME_DIR` (en memoria, permisos 600): sobrevive a
 cerrar terminales y se borra al cerrar sesión o reiniciar.
 
