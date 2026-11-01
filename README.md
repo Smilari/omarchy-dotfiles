@@ -108,7 +108,7 @@ fallback); si esas credenciales rotan, hay que actualizarlas en cada nodo.
 | `work index` | Regenera el índice de items en el `README.md` raíz |
 | `graph token` / `estado` / `logout` | Token de Microsoft Graph (el de Graph Explorer, ~24 h) compartido por todas las terminales |
 | `planner plans` / `sync` / `apply` | Baja planners de Microsoft como Markdown y muestra qué cambió; `apply` escribe cambios con simulacro y confirmación |
-| `teams sync` / `lista` / `dump` / `buscar` | Chats grupales de Teams (guardados en OneDrive por Power Automate) a Markdown; `sync` muestra qué llegó |
+| `teams sync` / `lista` / `dump` / `buscar` / `md` | Chats grupales de Teams y MD elegidos (guardados en OneDrive por Power Automate) a Markdown; `sync` muestra qué llegó |
 
 Estas funciones trabajan sobre el repo que indique `$OPS_BASE` y delegan en
 scripts que viven en ese repo, no en este: `tools/work-index.py`, `tools/graph.py`,
