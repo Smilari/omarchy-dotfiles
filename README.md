@@ -106,7 +106,7 @@ fallback); si esas credenciales rotan, hay que actualizarlas en cada nodo.
 | `work new <slug> ["Título"] [-p <padre>]` | Crea un item (`README.md` + `log.md`), opcionalmente hijo de otro. En el selector, `Ctrl-E` abre el README y `Ctrl-L` el log |
 | `work close <slug>` | Marca el item como cerrado y lo mueve a `archive/` |
 | `work index` | Regenera el índice de items en el `README.md` raíz |
-| `graph token` / `estado` / `logout` | Token de Microsoft Graph (el de Graph Explorer, ~24 h) compartido por todas las terminales |
+| `graph token` / `estado` / `sync` / `logout` | Token de Microsoft Graph (el de Graph Explorer, ~24 h) compartido por todas las terminales; `sync` sincroniza mail, teams y planner juntos |
 | `planner plans` / `sync` / `apply` | Baja planners de Microsoft como Markdown y muestra qué cambió; `apply` escribe cambios con simulacro y confirmación |
 | `mail sync` / `lista` / `leer` / `buscar` / `ticket <ID>` / `tickets` | Correo de trabajo vía Graph (solo lectura): por tipo, historia de tickets NOC/MDA y cruce con la bitácora |
 | `vault buscar` / `ver` / `copiar` / `crear` / `editar` / `mover` / `borrar` / `inventario` | VaultWarden del equipo vía `bw`, con simulacro antes de escribir |
