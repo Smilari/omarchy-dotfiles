@@ -109,7 +109,7 @@ fallback); si esas credenciales rotan, hay que actualizarlas en cada nodo.
 | `graph token` / `estado` / `logout` | Token de Microsoft Graph (el de Graph Explorer, ~24 h) compartido por todas las terminales |
 | `planner plans` / `sync` / `apply` | Baja planners de Microsoft como Markdown y muestra qué cambió; `apply` escribe cambios con simulacro y confirmación |
 | `mail sync` / `lista` / `leer` / `buscar` / `ticket <ID>` / `tickets` | Correo de trabajo vía Graph (solo lectura): por tipo, historia de tickets NOC/MDA y cruce con la bitácora |
-| `vault estado` / `inventario` / `lock` | VaultWarden del equipo vía `bw` (solo lectura por ahora) |
+| `vault buscar` / `ver` / `copiar` / `crear` / `editar` / `mover` / `borrar` / `inventario` | VaultWarden del equipo vía `bw`, con simulacro antes de escribir |
 | `snapshot <perfil> <amb> [etiqueta]` / `diff` / `lista` | Fotos de estado de VMs antes y después de una maniobra |
 | `teams sync` / `lista` / `dump` / `buscar` / `md` | Chats grupales de Teams y MD elegidos (guardados en OneDrive por Power Automate) a Markdown; `sync` muestra qué llegó |
 
