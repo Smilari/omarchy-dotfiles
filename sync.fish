@@ -17,7 +17,7 @@ cp ~/.config/fish/config.fish fish/config.fish
 
 echo "== config de apps"
 mkdir -p config
-for d in alacritty hypr tmux nvim waybar
+for d in alacritty hypr tmux nvim
     if test -d ~/.config/$d
         rsync -a --delete --exclude="*.bak" --exclude="*.bak.*" --exclude="*.save" --exclude="*.save.*" --exclude="*.orig" --exclude="*upgrade-to-*" ~/.config/$d/ config/$d/
         echo "   $d"
