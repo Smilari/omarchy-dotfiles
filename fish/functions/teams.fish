@@ -1,4 +1,4 @@
-function teams --description 'Chats grupales de Teams (Power Automate + OneDrive). Uso: teams sync [-v] | lista | dump <chat> | buscar <palabras>'
+function teams --description 'Chats grupales de Teams (Power Automate + OneDrive). Uso: teams sync [-v] | list | dump <chat> | search <palabras> | md'
     if not set -q OPS_BASE
         echo "OPS_BASE no está definido"
         return 1

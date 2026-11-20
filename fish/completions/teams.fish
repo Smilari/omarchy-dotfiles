@@ -9,14 +9,14 @@ for c in (d.get("value",[]) if isinstance(d,dict) else d):
     test -f $md; and awk -F'\t' '!/^#/ && $2 != "" {print "MD " $1}' $md
 end
 complete -c teams -f -n '__fish_use_subcommand' -a sync -d 'bajar de OneDrive y mostrar qué llegó'
-complete -c teams -f -n '__fish_use_subcommand' -a lista -d 'chats con mensajes recientes'
+complete -c teams -f -n '__fish_use_subcommand' -a list -d 'chats con mensajes recientes'
 complete -c teams -f -n '__fish_use_subcommand' -a dump -d 'un chat a markdown'
-complete -c teams -f -n '__fish_use_subcommand' -a buscar -d 'buscar en todos los chats'
+complete -c teams -f -n '__fish_use_subcommand' -a search -d 'buscar en todos los chats'
 complete -c teams -f -n '__fish_use_subcommand' -a md -d 'resolver teams-md.tsv y armar la condición del flujo'
 complete -c teams -f -n '__fish_seen_subcommand_from sync' -s v -d 'un mensaje por línea'
 complete -c teams -f -n '__fish_seen_subcommand_from dump' -a '(__teams_chats)'
-complete -c teams -f -n '__fish_seen_subcommand_from buscar' -l en -r -a '(__teams_chats)' -d 'solo en este chat'
-complete -c teams -f -n '__fish_seen_subcommand_from dump buscar' -l desde -r -d 'AAAA-MM-DD, HH:MM, 3h, 2d'
-complete -c teams -f -n '__fish_seen_subcommand_from dump buscar' -l hasta -r
-complete -c teams -f -n '__fish_seen_subcommand_from dump buscar' -l autor -r
-complete -c teams -f -n '__fish_seen_subcommand_from lista' -l dias -r
+complete -c teams -f -n '__fish_seen_subcommand_from search' -l en -r -a '(__teams_chats)' -d 'solo en este chat'
+complete -c teams -f -n '__fish_seen_subcommand_from dump search' -l desde -r -d 'AAAA-MM-DD, HH:MM, 3h, 2d'
+complete -c teams -f -n '__fish_seen_subcommand_from dump search' -l hasta -r
+complete -c teams -f -n '__fish_seen_subcommand_from dump search' -l autor -r
+complete -c teams -f -n '__fish_seen_subcommand_from list' -l dias -r

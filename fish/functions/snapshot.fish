@@ -1,4 +1,4 @@
-function snapshot --description 'Fotos de estado de VMs antes y después de una maniobra. Uso: snapshot <perfil> <amb> [etiqueta] | diff <perfil> <amb> [A [B]] | lista'
+function snapshot --description 'Fotos de estado de VMs antes y después de una maniobra. Uso: snapshot <perfil> <amb> [etiqueta] | diff <perfil> <amb> [A [B]] | list'
     if not set -q OPS_BASE
         echo "OPS_BASE no está definido"
         return 1

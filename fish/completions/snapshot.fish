@@ -12,6 +12,6 @@ function __snapshot_ambientes --description 'Ambientes del perfil que ya está e
 end
 complete -c snapshot -f -n '__fish_use_subcommand' -a '(__snapshot_perfiles)' -d perfil
 complete -c snapshot -f -n '__fish_use_subcommand' -a diff -d 'comparar dos fotos (por defecto, las dos últimas)'
-complete -c snapshot -f -n '__fish_use_subcommand' -a lista -d 'fotos guardadas'
+complete -c snapshot -f -n '__fish_use_subcommand' -a list -d 'fotos guardadas'
 complete -c snapshot -f -n '__fish_seen_subcommand_from diff; and test (count (commandline -opc)) -eq 2' -a '(__snapshot_perfiles)'
 complete -c snapshot -f -n 'not __fish_use_subcommand; and test (count (commandline -opc)) -le 3' -a '(__snapshot_ambientes)'

@@ -1,4 +1,4 @@
-function contingencia --description 'Contingencias: contingencia [filtro] | nueva "Título" [--hora HH:MM] | nota "texto" [--hora HH:MM] | fin [--hora HH:MM] | cerrar | issue | pdf'
+function contingencia --description 'Contingencias: contingencia [filtro] | new "Título" | log "texto" | end | close | issue | pdf  (--hora HH:MM)'
     if not set -q OPS_BASE
         echo "OPS_BASE no está definido"
         return 1
@@ -6,11 +6,11 @@ function contingencia --description 'Contingencias: contingencia [filtro] | nuev
     set -l py $OPS_BASE/tools/contingencia.py
     set -l base $OPS_BASE/contingencias
     switch "$argv[1]"
-        case nueva
+        case new
             set -l dir (python3 $py $argv); or return 1
             cd $dir
             echo "→ $dir"
-        case nota fin cerrar issue pdf
+        case log end close issue pdf
             python3 $py $argv
         case '*'
             set -l sel (python3 $py --list \

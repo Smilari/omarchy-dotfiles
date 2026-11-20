@@ -1,4 +1,4 @@
-function planner --description 'Planners de Microsoft vía Graph. Uso: planner plans | dump <planId> | sync | apply <archivo> [--si]'
+function planner --description 'Planners de Microsoft vía Graph. Uso: planner plans | dump <planId> | sync | apply <archivo> [--si] | new'
     if not set -q OPS_BASE
         echo "OPS_BASE no está definido"
         return 1

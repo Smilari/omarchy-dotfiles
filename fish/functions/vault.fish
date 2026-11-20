@@ -1,4 +1,4 @@
-function vault --description 'VaultWarden del equipo vía bw. Uso: vault estado | buscar | ver | copiar | crear | editar | mover | borrar | colecciones | inventario | lock'
+function vault --description 'VaultWarden del equipo vía bw. Uso: vault status | search | show | get | copy | create | edit | move | delete | collections | inventory | backup | lock'
     if not set -q OPS_BASE
         echo "OPS_BASE no está definido"
         return 1

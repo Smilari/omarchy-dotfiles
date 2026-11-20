@@ -1,5 +1,5 @@
 complete -c graph -f -n '__fish_use_subcommand' -a token -d 'cargar el token de Graph Explorer'
-complete -c graph -f -n '__fish_use_subcommand' -a estado -d 'de dónde sale el token y cuándo vence'
+complete -c graph -f -n '__fish_use_subcommand' -a status -d 'de dónde sale el token y cuándo vence'
 complete -c graph -f -n '__fish_use_subcommand' -a sync -d 'mail, teams y planner juntos'
 complete -c graph -f -n '__fish_use_subcommand' -a logout -d 'borrar el token guardado'
 complete -c graph -f -n '__fish_seen_subcommand_from sync' -a 'mail teams planner'
