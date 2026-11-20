@@ -6,7 +6,7 @@ set -l REPO (dirname (status filename))
 cd $REPO
 
 echo "== paquetes base"
-sudo pacman -S --needed fzf tmux sshfs wl-clipboard openfortivpn rsync git
+sudo pacman -S --needed fzf tmux sshfs wl-clipboard openfortivpn rsync git starship zoxide eza
 
 echo "== funciones fish"
 mkdir -p ~/.config/fish/functions ~/.config/fish/completions
@@ -33,6 +33,7 @@ for d in config/*/
     echo "   $name"
 end
 test -f config/tmux.conf; and cp config/tmux.conf ~/.tmux.conf
+test -f config/starship.toml; and cp config/starship.toml ~/.config/starship.toml
 
 echo "== systemd usuario"
 mkdir -p ~/.config/systemd/user

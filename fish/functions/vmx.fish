@@ -11,9 +11,9 @@ function vmx --description 'Multi-exec: abre N VMs en panes tmux sincronizados (
     end
 
     set -l win "multi-"(date +%H%M%S)
-    tmux new-session -d -s $win "ssh $hosts[1]"
+    tmux new-session -d -s $win "env TERM=xterm-256color ssh $hosts[1]"
     for h in $hosts[2..-1]
-        tmux split-window -t $win "ssh $h"
+        tmux split-window -t $win "env TERM=xterm-256color ssh $h"
         tmux select-layout -t $win tiled
     end
     tmux set-window-option -t $win synchronize-panes on

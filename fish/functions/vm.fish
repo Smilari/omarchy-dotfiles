@@ -43,6 +43,9 @@ function vm --description 'Conectar a una VM (fzf). Uso: vm [-u USUARIO] [filtro
         set_color -o red; echo "⚠  PRODUCCIÓN → $target"; set_color normal
     end
 
+    # RHEL 7 no conoce TERM=alacritty ni tmux-256color: clear, nano y el backspace fallan.
+    set -lx TERM xterm-256color
+
     if test "$VM_LOG" = 0
         ssh $target
         return

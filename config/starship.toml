@@ -1,0 +1,32 @@
+# Prompt en dos líneas: arriba el contexto, abajo ❯ con todo el ancho libre para el comando.
+# Pensado para paneles angostos (Claude al costado).
+add_newline = true
+format = "$hostname$directory$git_branch$git_status$cmd_duration$line_break$character"
+
+[hostname]
+ssh_only = true
+format = "[$hostname]($style) "
+style = "bold yellow"
+
+[directory]
+truncation_length = 3
+truncate_to_repo = false
+truncation_symbol = "…/"
+style = "bold cyan"
+
+[git_branch]
+format = "[$branch]($style) "
+style = "purple"
+
+[git_status]
+format = "[$all_status$ahead_behind]($style) "
+style = "red"
+
+[cmd_duration]
+min_time = 2000
+format = "[$duration]($style) "
+style = "yellow"
+
+[character]
+success_symbol = "[❯](bold green)"
+error_symbol = "[❯](bold red)"

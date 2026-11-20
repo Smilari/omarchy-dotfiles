@@ -17,13 +17,14 @@ cp ~/.config/fish/config.fish fish/config.fish
 
 echo "== config de apps"
 mkdir -p config
-for d in alacritty hypr tmux nvim
+for d in alacritty hypr tmux nvim waybar
     if test -d ~/.config/$d
         rsync -a --delete --exclude="*.bak" --exclude="*.bak.*" --exclude="*.save" --exclude="*.save.*" --exclude="*.orig" --exclude="*upgrade-to-*" ~/.config/$d/ config/$d/
         echo "   $d"
     end
 end
 test -f ~/.tmux.conf; and cp ~/.tmux.conf config/tmux.conf
+test -f ~/.config/starship.toml; and cp ~/.config/starship.toml config/starship.toml
 
 echo "== systemd (unidades de usuario propias)"
 mkdir -p systemd
