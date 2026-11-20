@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# Temperatura de la CPU (k10temp, Tctl). Ruta estable: dispositivo PCI fijo + input-filename;
+# el número hwmonN cambia entre reinicios, por eso se resuelve con el glob.
+HWMON_PATH_ABS=/sys/devices/pci0000:00/0000:00:18.3/hwmon
+INPUT_FILENAME=temp1_input
+CRITICAL=80
+
+file=$(ls "$HWMON_PATH_ABS"/hwmon*/"$INPUT_FILENAME" 2>/dev/null | head -1)
+if [[ ! -r $file ]]; then
+  printf '{"text":"󰔏 ?","tooltip":"Sensor no encontrado: %s/hwmon*/%s"}\n' "$HWMON_PATH_ABS" "$INPUT_FILENAME"
+  exit 0
+fi
+t=$(( ($(<"$file") + 500) / 1000 ))
+label=$(cat "${file%_input}_label" 2>/dev/null || echo temp)
+if (( t >= CRITICAL )); then
+  printf '{"text":"󰸁 %d°","tooltip":"CPU %s: %d °C — CRÍTICO (≥ %d °C)","class":"active"}\n' "$t" "$label" "$t" "$CRITICAL"
+else
+  printf '{"text":"󰔏 %d°","tooltip":"CPU %s: %d °C (crítico ≥ %d °C)"}\n' "$t" "$label" "$t" "$CRITICAL"
+fi

@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# Uso de memoria: porcentaje en la barra, "usado / total GiB" en el tooltip.
+awk '
+  /^MemTotal:/     { t = $2 }
+  /^MemAvailable:/ { a = $2 }
+  END {
+    u = t - a
+    printf "{\"text\":\"󰍛 %d%%\",\"tooltip\":\"Memoria: %.1f / %.1f GiB\"}\n", (u * 100 / t) + 0.5, u / 1048576, t / 1048576
+  }' /proc/meminfo

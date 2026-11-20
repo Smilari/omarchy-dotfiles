@@ -23,6 +23,14 @@ for d in alacritty hypr tmux nvim waybar
         echo "   $d"
     end
 end
+# Barra de Omarchy (omarchy-shell): solo el layout y los scripts propios.
+# El resto de ~/.config/omarchy (temas, branding, hooks) lo administra Omarchy.
+mkdir -p config/omarchy
+cp ~/.config/omarchy/shell.json config/omarchy/shell.json; and echo "   omarchy/shell.json"
+if test -d ~/.config/omarchy/bar
+    rsync -a --delete ~/.config/omarchy/bar/ config/omarchy/bar/
+    echo "   omarchy/bar"
+end
 test -f ~/.tmux.conf; and cp ~/.tmux.conf config/tmux.conf
 test -f ~/.config/starship.toml; and cp ~/.config/starship.toml config/starship.toml
 

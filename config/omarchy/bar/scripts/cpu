@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# Uso de CPU: delta de /proc/stat contra la muestra anterior (guardada en XDG_RUNTIME_DIR).
+state="${XDG_RUNTIME_DIR:-/tmp}/omarchy-bar-cpu.stat"
+read -r _ user nice system idle iowait irq softirq steal _ < /proc/stat
+total=$((user + nice + system + idle + iowait + irq + softirq + steal))
+busy=$((total - idle - iowait))
+pct=0
+if [[ -r $state ]]; then
+  read -r ptotal pbusy < "$state"
+  dt=$((total - ptotal))
+  (( dt > 0 )) && pct=$(( ( (busy - pbusy) * 100 + dt / 2 ) / dt ))
+fi
+echo "$total $busy" > "$state"
+read -r l1 l5 l15 _ < /proc/loadavg
+printf '{"text":" %d%%","tooltip":"CPU: %d%% (%d hilos) · carga %s %s %s"}\n' "$pct" "$pct" "$(nproc)" "$l1" "$l5" "$l15"

@@ -28,6 +28,10 @@ for d in config/*/
         echo "   hypr (omitido — Omarchy lo administra, ver pendientes)"
         continue
     end
+    if test "$name" = omarchy; and test -f ~/.config/omarchy/shell.json
+        cp ~/.config/omarchy/shell.json ~/.config/omarchy/shell.json.pre-dotfiles
+        echo "   backup en omarchy/shell.json.pre-dotfiles"
+    end
     mkdir -p ~/.config/$name
     cp -r $d. ~/.config/$name/
     echo "   $name"
