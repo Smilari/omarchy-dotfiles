@@ -1,0 +1,5 @@
+complete -c icinga-dump -f -n "not __fish_seen_subcommand_from diff" -a diff -d 'compara dos volcados'
+complete -c icinga-dump -f -n "not __fish_seen_subcommand_from diff" -s o -r -F -d 'carpeta de salida'
+complete -c icinga-dump -f -n "not __fish_seen_subcommand_from diff" -l sin-estado -d 'sin estado/ (API)'
+complete -c icinga-dump -f -n "not __fish_seen_subcommand_from diff" -s v -d 'muestra cada paso'
+complete -c icinga-dump -f -n '__fish_seen_subcommand_from diff' -a '(test -d $OPS_BASE/logs/icinga-dump; and ls $OPS_BASE/logs/icinga-dump)'
